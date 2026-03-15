@@ -142,55 +142,80 @@ class SmartHouse:
     The SmartHouse class provides functionality to register rooms and floors (i.e. changing the 
     house's physical layout) as well as register and modify smart devices and their state.
     """
+    def __init__(self):
+        self._floors = []
+        self._devices = []
+
 
     def register_floor(self, level):
-        """
-        This method registers a new floor at the given level in the house
-        and returns the respective floor object.
-        """
+        # This method registers a new floor at the given level in the house
+        # and returns the respective floor object.
+        existing_floor = self._find_floor(level)
+        if existing_floor is not None:
+            return existing_floor
+        
+        floor = Floor(level)
+        self._floors.append(floor)
+        self._floors.sort(key=lambda f: f.level)
+        return floor
 
     def register_room(self, floor, room_size, room_name = None):
-        """
-        This methods registers a new room with the given room areal size 
-        at the given floor. Optionally the room may be assigned a mnemonic name.
-        """
-        pass
-
+        # This methods registers a new room with the given room areal size 
+        # at the given floor. Optionally the room may be assigned a mnemonic name.
+        room = Room(floor, room_size, room_name)
+        floor.add_room(room)
+        return room
 
     def get_floors(self):
-        """
-        This method returns the list of registered floors in the house.
-        The list is ordered by the floor levels, e.g. if the house has 
-        registered a basement (level=0), a ground floor (level=1) and a first floor 
-        (leve=1), then the resulting list contains these three flors in the above order.
-        """
-        pass
-
+        # This method returns the list of registered floors in the house.
+        # The list is ordered by the floor levels, e.g. if the house has 
+        # registered a basement (level=0), a ground floor (level=1) and a first floor 
+        # (leve=1), then the resulting list contains these three flors in the above order.
+        return self._floors
 
     def get_rooms(self):
-        """
-        This methods returns the list of all registered rooms in the house.
-        The resulting list has no particular order.
-        """
-        pass
-
+        # This methods returns the list of all registered rooms in the house.
+        # The resulting list has no particular order.
+        rooms = []
+        for floor in self._floors:
+            rooms.extend(floor.rooms)
+        return rooms
 
     def get_area(self):
-        """
-        This methods return the total area size of the house, i.e. the sum of the area sizes of each room in the house.
-        """
-
+        # This methods return the total area size of the house, i.e. the sum of the area sizes of each room in the house.
+        return round(sum(room.room_size for room in self.get_rooms()), 2)
 
     def register_device(self, room, device):
-        """
-        This methods registers a given device in a given room.
-        """
-        pass
+        # This methods registers a given device in a given room.
 
-    
+        if device.room is not None and device.room is not room:
+            device.room.remove_device(device)
+
+        if device not in self._devices:
+            self._devices.append(device)
+
+        room.add_device(device)
+        return device
+
     def get_device(self, device_id):
-        """
-        This method retrieves a device object via its id.
-        """
-        pass
+        # This method retrieves a device object via its id.
+        for device in self._devices:
+            if device.id == device_id:
+                return device
+        return None
 
+    def get_devices(self):
+        # Return a list of all registered devices in the house.
+        return self._devices
+    
+    def get_device_by_id(self, device_id):
+        # Return a device object via its id by delegating to get_device().
+        return self.get_device(device_id)
+    
+    def _find_floor(self, level):
+        # Find and return a floor object by its level. 
+        # Return None if no such floor exists.
+        for floor in self._floors:
+            if floor.level == level:
+                return floor
+        return None
