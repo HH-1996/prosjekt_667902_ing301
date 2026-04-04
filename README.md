@@ -12,17 +12,6 @@ I Del B er løsningen utvidet slik at SmartHouse-strukturen kan lastes fra datab
 
 ---
 
-## Innhold
-
-- [Prosjektbeskrivelse](#prosjektbeskrivelse)
-- [Funksjonalitet](#funksjonalitet)
-- [Prosjektstruktur](#prosjektstruktur)
-- [Kjøring av tester](#kjøring-av-tester)
-- [Teknologier](#teknologier)
-- [Egne merknader](#egne-merknader)
-
----
-
 ## Prosjektbeskrivelse
 
 SmartHouse-prosjektet modellerer et hus med:
