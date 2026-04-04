@@ -1,6 +1,6 @@
 # ING301 – SmartHouse-prosjekt
 
-Dette repositoryet inneholder min løsning på SmartHouse-prosjektet i **ING301**.
+Dette repoet har min løsning på SmartHouse-prosjektet i **ING301**.
 
 Prosjektet modellerer et smart hus med etasjer, rom, sensorer, aktuatorer og målinger.  
 Løsningen er bygget opp i to deler:
